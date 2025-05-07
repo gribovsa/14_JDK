@@ -1,6 +1,9 @@
-package server.client;
+package chat.client;
 
-import server.server.ServerWindow;
+
+import chat.logger.Logger;
+import chat.server.Server;
+import chat.server.ServerWindow;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,44 +20,58 @@ public class ClientGUI extends JFrame implements ClientView {
     private JButton btnLogin, btnSend;
     private JPanel headerPanel;
 
+/*todo
+    В этом классе находятся все методы относящиеся к графике
+ */
 
-    private Client client;
+    private Client client; //ссылка на клиента
+    private ServerWindow serverWindow;
 
-    public ClientGUI(ServerWindow server) {
 
-        this.client = new Client(this, server.getServer);
+    public ClientGUI(Logger loger, Server server, ServerWindow serverWindow) {
+
+        //вызываю экземпляр класса сервера и передаю ему для работы этот класс, реализующий методы интерфейса
+        //долго с этим разбирался (так делается когда классы обращаются друг к другу в своих методах)
+        this.client = new Client(this, loger, server);
+
+        this.serverWindow = serverWindow; //требуется для setLocation
 
         setSize(WIDTH, HEIGHT);
         setResizable(false);
         setTitle("Chat client");
-        setLocation(server.getX() - 500, server.getY());
-
+        setLocation(serverWindow.getX() - 500, serverWindow.getY());
         createPanel();
-
         setVisible(true);
     }
 
-//    public void answer(String text){
-//        //метод использует сервер, когда хочет послать сообщения от клиентов
-//        appendLog(text);
-//    }
 
-    private void connectToServer() {
-        //наш внутренний метод, который срабатывает при нажатии кнопки login
-        if (client.connectToServer(tfLogin.getText())) {
-            hideHeaderPanel(false);
-        }
-    }
+    //Имплементируемые методы
 
     @Override
-    public void sendMessage(String text) {
+    public void showMessage(String text) {
         appendLog(text);
     }
 
+    @Override
     public void disconnectFromServer() {
         hideHeaderPanel(true);
         client.disconnect();
     }
+
+    @Override
+    public void appendLog(String text) {
+        //метод добавления на центр панель сообщения
+        log.append(text + "\n");
+    }
+
+    @Override
+    public String getTfLogin() {
+        return tfLogin.getText();
+    }
+
+
+
+    //Методы представления GUI
 
     private void hideHeaderPanel(boolean visible) {
         headerPanel.setVisible(visible);
@@ -65,12 +82,6 @@ public class ClientGUI extends JFrame implements ClientView {
         //метод отправки сообщения, который срабатывает при нажатии кнопки отправить
         client.sendMessage(tfMessage.getText());
         tfMessage.setText(" "); //обнуляем графическое окно
-    }
-
-
-    private void appendLog(String text) {
-        //метод добавления на центр панель сообщения
-        log.append(text + "\n");
     }
 
     private void createPanel() {
@@ -96,7 +107,7 @@ public class ClientGUI extends JFrame implements ClientView {
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                connectToServer(); //вызов метода connectToserver
+                client.connectToServer(); //вызов метода connectToServer у клиента
             }
         });
 

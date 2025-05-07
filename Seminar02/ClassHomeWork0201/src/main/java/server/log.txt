@@ -1,4 +1,0 @@
-Sergey Gribov: Привет сервер
-Alexandr Gribov: Привет сервер
-Sergey Gribov: Привет Александр
-Alexandr Gribov: Привет Сергей
