@@ -1,2 +1,4 @@
-package map;public class ExTreeMap {
+package map;
+
+public class ExTreeMap {
 }

@@ -7,7 +7,7 @@ import java.util.HashSet;
  * Воспользуемся интерфейсом Set — который гарантирует уникальность входящих в коллекцию элементов.
  */
 
-public class Example {
+public class ExHashSet {
 
     public static void main(String[] args) {
         //Начальная емкость по умолчанию - 16, коэффициент загрузки - 0,75
