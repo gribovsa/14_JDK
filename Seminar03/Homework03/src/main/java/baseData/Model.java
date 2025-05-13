@@ -1,7 +1,8 @@
 package baseData;
 
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 public class Model implements WorkBD {
 
@@ -14,32 +15,32 @@ public class Model implements WorkBD {
 
     @Override
     public boolean saveData(int id, String text) {
-        try (FileWriter writer = new FileWriter(BD_PATH, true)) {
-            writer.write((Integer.toString(id) + " " + text));
+        Charset code = StandardCharsets.UTF_8;
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(BD_PATH, code, true))) {
+            writer.write((Integer.toString(id) + "," + text));
             writer.write("\n");
             return true;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
         return false;
     }
 
     @Override
-    public String getAllData() {
-        //подключаемся к файлу, читаем его, возвращаем строку
-        StringBuilder stringBuilder = new StringBuilder();
-        try (FileReader reader = new FileReader(BD_PATH)) {
-            int c;
-            while ((c = reader.read()) != 1) {
-                stringBuilder.append((char) c);
+    public void loadData() {
+        try (BufferedReader reader = new BufferedReader(new FileReader(BD_PATH))) {
+            String line;
+            while ((line = reader.readLine()) != null) { //если строка не пустая
+                String[] arr = line.split(",");
+                //return String.format("Запись ID: %s, text: %s", arr[0], arr[1]);
+                System.out.println(String.format("Запись ID: %s, text: %s", arr[0], arr[1]));
             }
-            stringBuilder.delete(stringBuilder.length() - 1, stringBuilder.length());
-            return stringBuilder.toString();
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+
         }
-        return "";
+
     }
 
     @Override
