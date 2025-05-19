@@ -2,7 +2,13 @@ package Task8;
 
 /*todo
     Semaphore - примитив синхронизации
-    два метода acquire, release
+    Semaphore один из примитивов синхронизации, позволяющий определить N
+    потоков, которым позволено исполнять критическую секцию кода. Когда создается
+    Semaphore, в конструктор передается количество разрешенных потоков (пропуск).
+    Представьте, что вам нужно реализовать приложение для контроля количества
+    свободных мест на парковке - если места на парковке закончились, то остальные
+    машины должны ждать пока место не освободится.
+    - два метода acquire, release
  */
 
 import java.util.concurrent.Semaphore;
@@ -32,19 +38,19 @@ public class Main {
         public void run() {
             try {
                 System.out.println(Thread.currentThread().getName() + " ожидает разрешение");
-                sem.acquire(); //получение разрешения у семафора
+                sem.acquire(); //метод захвата семафора - и получение разрешения у семафора двигаться вперёд
 
                 for (int i = 0; i < 5; i++) {
-                    System.out.println(Thread.currentThread().getName() + ": " + count);
                     count++;
+                    System.out.println(Thread.currentThread().getName() + ": " + count);
                     Thread.sleep(100);
 
                 }
             } catch (InterruptedException e) {
                 System.out.println(e.getMessage());
             }
-            System.out.println(Thread.currentThread().getName() + "освобождает разрешение");
-            sem.release();
+            System.out.println(Thread.currentThread().getName() + " освобождает разрешение");
+            sem.release(); //метод освобождения у семафора
         }
     }
 }
