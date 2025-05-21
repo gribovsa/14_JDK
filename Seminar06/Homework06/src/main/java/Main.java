@@ -23,10 +23,12 @@ public class Main {
 
 
     public static void main(String[] args) {
-        System.out.println("Статистика игры: " + getStatistic());
-        System.out.println("Количество побед: " + getNumWins(getStatistic()));
-        System.out.println("Количество неудач: " + getNumDefeats(getStatistic()));
-        System.out.println("Всего 1000 игр, почему суммарное кол-во побед и неудач не 1000, не понимаю!");
+        HashMap<Integer,Integer>statistic = getStatistic();
+        System.out.println("Статистика игры: " + statistic);
+        System.out.println("Количество побед: " + getNumWins(statistic));
+        System.out.println("Количество неудач: " + getNumDefeats(statistic));
+        System.out.println("Всего провели: " + (getNumWins(statistic) + getNumDefeats(statistic)) + " игр!");
+        System.out.println("Парадокс подтверждается, примерно 2/3 побед, 1/3 поражений.");
     }
 
 

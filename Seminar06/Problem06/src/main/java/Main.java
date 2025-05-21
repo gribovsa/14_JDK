@@ -9,19 +9,23 @@ import java.util.Random;
     Победа - 1
     Неудача - 0
     Проблема: метод подсчёта побед и неудач считает неверно, почему? Как исправить?
+    Проблема решена, при вызове методов каждый раз создавался новый экземпляр класса
  */
 
 
 
 public class Main {
+
+
+
+
     public static void main(String[] args) {
-        System.out.println("Статистика побед и неудач: " + generateMap());
-        System.out.println("Победы: " + getNumWins(generateMap()));
-        System.out.println("Неудачи: " + getNumDefeats(generateMap()));
+        HashMap<Integer, Integer> statistic = generateMap();
+        System.out.println("Статистика побед и неудач: " + statistic);
+        System.out.println("Победы: " + getNumWins(statistic));
+        System.out.println("Неудачи: " + getNumDefeats(statistic));
         System.out.println("Всего игр 10, суммарное количество побед и неудач не равно 10!");
     }
-
-
 
 
     /**
